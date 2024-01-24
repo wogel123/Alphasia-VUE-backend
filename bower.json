@@ -1,0 +1,9 @@
+{
+    "name": "nodeblog",
+    "version": "1.0.0",
+    "description": "nodejs blog",
+    "author": "Kylian PETREQUIN",
+    "dependencies": {
+        "bootstrap": "*"
+    }
+}
