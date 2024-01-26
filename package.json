@@ -1,7 +1,7 @@
 {
-    "name": "nodeblog",
+    "name": "nodeforum",
     "version": "1.0.0",
-    "description": "nodejs blog",
+    "description": "nodejs forum",
     "author": "Kylian PETREQUIN",
     "dependencies": {
         "express": "*",
