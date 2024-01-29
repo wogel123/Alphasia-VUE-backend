@@ -1,20 +1,183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block metas %}{% endblock %}
 
-    <title>NodeJS Blog</title>
+    <title>{% block title %}{% endblock %} | Forum</title>
+
+    <link rel="icon" href="/favicon.ico">
 
     <link rel="stylesheet" href="/bower/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bower/fontawesome/css/all.min.css"/>
     <link rel="stylesheet" href="/css/style.css">
-
-    <script src="/bower/jquery/dist/jquery.min.js"></script>
+    {% block stylesheets %}{% endblock %}
 </head>
 <body>
 
-    {% block body %}{% endblock %}
+<header>
+    <br>
+    <br>
+    <br>
+</header>
 
-    <script src="/js/app.js"></script>
+<section>
+    <div class="container">
+        <div class="navLayout">
+            <ul class="navContent">
+                <li>
+                    <a href=""><i class="fas fa-home"></i></a>
+                </li>
+                <li>
+                    <a href="" class="active">Forums</a>
+                </li>
+                <li>
+                    <a href="">Membres</a>
+                </li>
+                <li class="ms-auto">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#signModal" class="signinModal">Se connecter</a>
+                </li>
+                <li>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#signModal" class="signupModal">S'inscrire</a>
+                </li>
+            </ul>
+            <ul class="navSubsection">
+                <li>
+                    <a href="">Search forums</a>
+                </li>
+                <li>
+                    <a href="">Recent posts</a>
+                </li>
+            </ul>
+        </div>
+        <div class="pageContent">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="breadcrumbContent">
+                        <nav>
+                            <fieldset class="breadcrumbLayout">
+                            <span class="breadcrumbCrust">
+                                <a href="/" class="breadcrumbCrumb">
+                                    <span><i class="fas fa-home"></i></span>
+                                </a>
+                                <span class="breadcrumbArrow">
+                                    <span></span>
+                                </span>
+                            </span>
+                                <span class="breadcrumbCrust">
+                                <a href="/" class="breadcrumbCrumb">
+                                    <span>Forum</span>
+                                </a>
+                                <span class="breadcrumbArrow">
+                                    <span></span>
+                                </span>
+                            </span>
+                            </fieldset>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group search">
+                        <input type="text" class="form-control" placeholder="Rechercher ..." style="font-size: 12px;">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </div>
+
+</section>
+
+<footer>
+
+</footer>
+
+
+<!-- Modals -->
+<div class="modal fade" id="signModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="m-0 p-0 signinForm signForm">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Connexion</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="loginMessage"></div>
+                    <div class="mb-3">
+                        <label for="loginUsername" class="form-label">Nom d'utilisateur</label>
+                        <input class="form-control" id="loginUsername" placeholder="Entrez votre nom d'utilisateur" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Mot de passe</label>
+                        <input class="form-control" id="loginPassword" placeholder="Entrez votre mot de passe" type="password" >
+                    </div>
+                    <div class="d-flex mb-3">
+                        <button type="submit" id="loginSubmit" class="btn btn-primary mx-auto">Connexion</button>
+                    </div>
+                    <div class="d-flex">
+                        <p class="ms-auto"><a href="#">Mot de passe oublié ?</a></p>
+                    </div>
+                    <hr>
+                    <div class="d-flex">
+                        <a href="#" class="mx-auto signBtn">Vous n'avez pas encore de compte ? Inscrivez-vous</a>
+                    </div>
+                </div>
+            </form>
+            <form class="m-0 p-0 signupForm signForm">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Inscription</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="registerMessage"></div>
+                    <div class="mb-3">
+                        <label for="registerUsername" class="form-label">Nom d'utilisateur</label>
+                        <input class="form-control" id="registerUsername" placeholder="Entrez votre nom d'utilisateur" autocomplete="off" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerEmail" class="form-label">Email</label>
+                        <input class="form-control" id="registerEmail" placeholder="Entrez votre email" autocomplete="off" type="email">
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <label for="registerPassword" class="form-label">Mot de passe</label>
+                        <input class="form-control" id="registerPassword" placeholder="Entrez votre mot de passe" autocomplete="off" type="password" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerConfirmPassword" class="form-label">Confirmer le mot de passe</label>
+                        <input class="form-control" id="registerConfirmPassword" placeholder="Confirmez votre mot de passe" autocomplete="off" type="password" >
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="registerConditions">
+                        <label class="form-check-label" for="registerConditions"> J'accepte les <a href="#" target="_blank">Conditions d'utilisation</a></label>
+                    </div>
+                    <div class="mb-3 d-flex">
+                        <button type="submit" id="registerSubmit" class="btn btn-primary mx-auto">Inscription</button>
+                    </div>
+                    <hr>
+                    <div class="d-flex">
+                        <a href="#" class="mx-auto signBtn">Vous êtes déjà inscrit ? Connectez-vous</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="/bower/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/bower/jquery/dist/jquery.min.js"></script>
+<script src="/js/app.js"></script>
+{% block javascripts %}{% endblock %}
+
 </body>
 </html>

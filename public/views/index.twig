@@ -1,76 +1,73 @@
-{% extends "layout.twig" %}
+{% extends '/layout.twig' %}
 
-{% block body %}
+{% block title 'Accueil' %}
 
-<header class="p-3 text-bg-dark">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li>
-                    <a href="#" class="nav-link px-2 text-white">Home</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link px-2 text-white">Home</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link px-2 text-white">Home</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link px-2 text-white">Home</a>
-                </li>
-            </ul>
+{% block content %}
 
-            <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2">Login</button>
-                <button type="button" class="btn btn-warning">Sign up</button>
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="forum-node">
+                <div class="forum-panel">
+                    <div class="forum-panel-heading">
+                        <h4>
+                            <a role="button" data-toggle="collapse" data-target="#forum-1" style="background-color: #da951b !important;">
+                                <span>Alphasia</span>
+                                <small>La vie du projet et les informations importantes</small>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="forum-1" class="panel-collapse show" role="tabpanel" aria-labelledby="forum-node-heading-one">
+                        <div class="forum-node-lg">
+                            <div class="forum-panel-body">
+                                <div class="forum-node-box">
+                                    <div class="forum-node-title">
+                                        <div class="forum-node-icon">
+                                            <i class="fas fa-comment-alt" style="transform: rotateY(180deg); color: #da951b"></i>
+                                        </div>
+                                        <div class="forum-node-name">
+                                        <span class="forum-node-name-text">
+                                            <a href="/forum/" style="color: #da951b">Recrutements</a>
+                                        </span>
+                                            <span class="forum-node-name-stats">
+                                            <p class="me-3"><b>Discussions : </b>1 758</p>
+                                            <p><b>Messages : </b>12 589</p>
+                                        </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="forum-node-infos">
+                                    <span class="forum-node-infos-img">
+                                        <a style="cursor: pointer">
+                                            <img src="https://alphasia.net/api/user/getImage/18669522045b3163d3ab63f" width="48" height="48" alt="">
+                                        </a>
+                                    </span>
+                                        <span class="forum-node-infos-latest">
+                                        <span class="forum-node-infos-latest-name">
+                                            Dernier :
+                                            <a href="/forum/thread/">Gestion des candidatures</a>
+                                        </span>
+                                        <span class="forum-node-infos-latest-infos">
+                                            <a style="cursor: pointer">wogel123</a>,
+                                            <p id="date">il y a 2h</p>
+                                        </span>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="forum-node-sub">
+                                    <a href="/forum/">Déposer une plainte</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</header>
 
+{% endblock %}
 
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 mx-auto">
-                    <form class="mt-5">
-                        <div id="response">
+{% block stylesheets %}
+{% endblock %}
 
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Nom d'utilisateur</label>
-                                <input type="text" name="username" id="username" class="form-control">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" id="email" class="form-control">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Mot de passe</label>
-                                <input type="password" name="password" id="password" class="form-control">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="passwordConfirm" class="form-label">Confirmer le mot de passe</label>
-                                <input type="password" name="passwordConfirm" id="passwordConfirm" class="form-control">
-                            </div>
-
-                            <a id="register" class="btn btn-primary">S'inscire</a>
-
-                        </div>
-
-                    </form>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-
-
+{% block javascripts %}
 {% endblock %}
