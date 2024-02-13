@@ -1,24 +1,24 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../lib/database');
 
-const User = sequelize.define('members', {
-  id: {
-    type: Sequelize.INTEGER,
+const UserToken = sequelize.define('members_tokens', {
+  tokenid: {
+    type: Sequelize.STRING,
     primaryKey: true,
     allowNull: true,
   },
-  username: {
+  userid: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  email: {
+  expired: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
-  password: {
+  timestamp: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   }
-});
+}, {timestamps: false,});
 
-module.exports = User;
+module.exports = UserToken;
