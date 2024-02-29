@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const UserToken = require("../models/UserToken");
 const User = require("../models/User");
 const {Op} = require("sequelize");
+const UserRank = require("../models/UserRank");
+const Rank = require("../models/Rank");
 
 
 module.exports = class Auth
@@ -21,7 +23,17 @@ module.exports = class Auth
 
     async getById(userid)
     {
-        let user = await User.findOne({where: {id: userid}})
+        let user = await User.findOne({
+            where: {
+                id: userid
+            },
+            include: {
+                model: UserRank,
+                include: {
+                    model: Rank
+                }
+            }
+        })
         this.user = user.dataValues
     }
 
@@ -34,13 +46,12 @@ module.exports = class Auth
             tokenid: token_id,
             userid: user_id
         });
-        let options = {
-            maxAge: 60 * 60 * 24 * 30 * 1000,
-            httpOnly: false,
-            secure: true,
-        };
 
-        this.#res.cookie("SessionCookie", token, options);
+        await User.update({ last_login: Date.now() }, {
+            where: {
+                id: user_id,
+            },
+        });
 
         return token
 
@@ -57,7 +68,21 @@ module.exports = class Auth
             await this.getById(savedToken.userid)
         }
 
-        return {isLogged: this.logged, user: this.user}
+        return {logged: this.logged, user: this.user}
+    }
+
+    async destroyToken(token)
+    {
+        let decodedToken = jwt.verify(token, this.#token_key)
+
+        await UserToken.update({ expired: 1 }, {
+            where: {
+                tokenid: decodedToken.token_id
+            }
+        });
+
+        return {loggedOut: true}
+
     }
 
 

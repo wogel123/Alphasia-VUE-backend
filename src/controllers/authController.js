@@ -1,20 +1,16 @@
 const Joi = require('joi');
 const User = require('../models/User')
+const UserRank = require('../models/UserRank')
 const UUID = require('uuid')
 const bcrypt = require('bcrypt')
 const Auth = require("../Auth/Auth");
+const controller = require("./controller");
+const Rank = require("../models/Rank");
 const Op = require('sequelize').Op
 
-module.exports = class authController
+module.exports = class authController extends controller
 {
-
     static #object;
-
-    constructor(req, res)
-    {
-        this.req = req;
-        this.res = res;
-    }
 
     static init(req, res)
     {
@@ -32,6 +28,12 @@ module.exports = class authController
             return await User.findOne({
                 where: {
                     [Op.or]: request
+                },
+                include: {
+                    model: UserRank,
+                    include: {
+                        model: Rank
+                    }
                 }
             });
         } catch (error) {
@@ -45,30 +47,30 @@ module.exports = class authController
             username: Joi.string()
                 .required()
                 .messages({
-                    'string.empty': 'Vous devez saisir un nom d\'utilisateur'
+                    'string.empty': 'Vous devez saisir un nom d\'utilisateur.'
                 }),
 
             email: Joi.string()
                 .required()
                 .email()
                 .messages({
-                    'string.email': 'Veuillez saisir une adresse email valide',
-                    'string.empty': 'Vous devez saisir une adresse email'
+                    'string.email': 'Veuillez saisir une adresse email valide.',
+                    'string.empty': 'Vous devez saisir une adresse email.'
                 }),
 
             password: Joi.string()
                 .required()
                 .messages({
-                    'string.empty': 'Vous devez saisir un mot de passe'
+                    'string.empty': 'Vous devez saisir un mot de passe.'
                 }),
 
-            passwordConfirm: Joi.any().equal(Joi.ref('password')).required().messages({'any.only': 'Vos mots de passe ne correspondent pas'})
+            passwordConfirm: Joi.any().equal(Joi.ref('password')).required().messages({'any.only': 'Vos mots de passe ne correspondent pas.'})
         })
 
         const validation = registerSchema.validate(this.req.body)
 
         if (validation.error === undefined) {
-            if(await this.findUser(this.req.body.username, this.req.body.email) !== null) {
+            if(await this.findUser(this.req.body.username, this.req.body.email) === null) {
 
                 try {
 
@@ -83,6 +85,11 @@ module.exports = class authController
                         password: password
                     });
 
+                    const rank = await UserRank.create({
+                        user_id: id,
+                        rank_id: 1
+                    })
+
                     let auth = new Auth(this.res)
                     let token = await auth.generateToken(id)
 
@@ -92,7 +99,7 @@ module.exports = class authController
                 }
 
             } else {
-                return this.res.json({"error": true, "message": "Ce nom d'utilisateur ou cette adresse email sont déjà utilisés"})
+                return this.res.json({"error": true, "message": "Ce nom d'utilisateur ou cette adresse email sont déjà utilisés."})
             }
         } else {
             let response = {}
@@ -110,13 +117,13 @@ module.exports = class authController
             username: Joi.string()
                 .required()
                 .messages({
-                    'string.empty': 'Vous devez saisir un nom d\'utilisateur'
+                    'string.empty': 'Vous devez saisir un nom d\'utilisateur.'
                 }),
 
             password: Joi.string()
                 .required()
                 .messages({
-                    'string.empty': 'Vous devez saisir un mot de passe'
+                    'string.empty': 'Vous devez saisir un mot de passe.'
                 }),
 
         })
@@ -138,11 +145,11 @@ module.exports = class authController
                     auth.logged = true
                     return this.res.json({"error": false, "message": "OK", "user": user, "token": token})
                 } else {
-                    return this.res.json({"error": true, "message": "Le mot de passe est incorrect"})
+                    return this.res.json({"error": true, "message": "Le mot de passe est incorrect."})
                 }
 
             } else {
-                return this.res.json({"error": true, "message": "Ce nom d'utilisateur n'existe pas"})
+                return this.res.json({"error": true, "message": "Ce nom d'utilisateur n'existe pas."})
             }
 
         } else {
@@ -159,6 +166,13 @@ module.exports = class authController
     {
         let auth = new Auth(this.res)
         let response = await auth.checkToken(this.req.body.token)
+        return this.res.json(response)
+    }
+
+    async logout()
+    {
+        let auth = new Auth(this.req)
+        let response = await auth.destroyToken(this.req.body.token)
         return this.res.json(response)
     }
 
